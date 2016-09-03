@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Rondasoperativas.iml" filepath="$PROJECT_DIR$/Rondasoperativas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RondaxAPP.iml" filepath="$PROJECT_DIR$/RondaxAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
