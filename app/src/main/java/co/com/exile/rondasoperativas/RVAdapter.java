@@ -35,7 +35,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.EquipoViewHolder>{
 
     @Override
     public int getItemCount() {
-        Log.i("equipos count", "" + equipos.size());
+        Log.i("campos count", "" + equipos.size());
         return equipos.size();
     }
 
@@ -52,9 +52,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.EquipoViewHolder>{
         equipoViewHolder.equipo.setText(equipo.getNombre());
         String subtitle = equipo.getPlanta() + " - " + equipo.getUnidad();
         equipoViewHolder.equipoSubtitle.setText(subtitle);
+        equipoViewHolder.checkImage.setContentDescription(""+equipo.getId());
         if(equipo.isChecked()){
             equipoViewHolder.checkImage.setVisibility(View.VISIBLE);
-
         }
     }
 

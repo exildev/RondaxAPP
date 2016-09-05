@@ -1,5 +1,6 @@
 package co.com.exile.rondasoperativas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.android.volley.Response;
@@ -70,12 +74,13 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         JSONObject activity = response.getJSONObject(i);
                         JSONObject e = activity.optJSONObject("equipo");
-                        JSONObject u = activity.optJSONObject("unidad");
-                        JSONObject p = activity.optJSONObject("planta");
+                        JSONObject u = e.optJSONObject("unidad");
+                        JSONObject p = u.optJSONObject("planta");
                         String nombre = e.getString("nombre");
                         String unidad = u.getString("nombre");
                         String planta = p.getString("nombre");
-                        Equipo equipo = new Equipo(i, nombre, unidad, planta, false);
+                        int formulario = e.getInt("formulario");
+                        Equipo equipo = new Equipo(formulario, nombre, unidad, planta, false);
                         equipos.add(equipo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -98,6 +103,24 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initializeData() {
         equipos = new ArrayList<>();
+    }
+
+    public void initForm(View view){
+        ViewGroup row = (ViewGroup) view.getParent();
+        ImageView checkImage = (ImageView) row.findViewById(R.id.check_image);
+        TextView name = (TextView) row.findViewById(R.id.equipo);
+        String content = checkImage.getContentDescription().toString();
+        initForm(content, name.getText().toString());
+    }
+
+    private void initForm(String formPk, String name){
+        Intent i = getIntent();
+        String user = i.getStringExtra("user");
+        Intent intent = new Intent(this, FormActivity.class);
+        intent.putExtra("form", formPk);
+        intent.putExtra("name", name);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
 }

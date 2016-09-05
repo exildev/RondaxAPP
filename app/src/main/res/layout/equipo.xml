@@ -82,7 +82,8 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_done"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter"
+                    android:visibility="visible" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -90,6 +91,6 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:onClick="showData"
-        android:visibility="gone"/>
+        android:onClick="initForm"
+        android:visibility="visible"/>
 </RelativeLayout>
