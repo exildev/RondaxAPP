@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:24.2.0'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.volley:volley:1.0.0'
 }
