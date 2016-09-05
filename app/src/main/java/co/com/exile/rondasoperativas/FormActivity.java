@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -94,19 +96,21 @@ public class FormActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(formRequest);
     }
 
-    public void saveRegistro(View view){
+    public void saveRegistro(final View view){
         String url = "http://104.236.33.228:8060/formulario/form/registro/"+ registro_id +"/";
         StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "Registrado con exito", Toast.LENGTH_LONG).show();
+                        finish();
                         Log.i("form", response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("login", error.toString());
+                        Log.e("login", new String(error.networkResponse.data));
                         Snackbar.make(findViewById(R.id.main_container),"formulario mal diligenciado", 800).show();
                     }
                 }){
@@ -114,10 +118,12 @@ public class FormActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 for (int i = 0; i < mRecyclerView.getChildCount(); i++){
-                    View container = mRecyclerView.getChildAt(i);
+                    TextInputLayout container = (TextInputLayout) mRecyclerView.getChildAt(i);
                     TextInputEditText field = (TextInputEditText) container.findViewById(R.id.field);
-                    params.put(field.getHint().toString(), field.getText().toString());
+                    params.put(campos.get(i), field.getText().toString());
                 }
+                params.put("formulario", id);
+                params.put("operario", user_id);
                 return params;
             }
         };
