@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i("login", response);
-                        initHome();
+                        initHome(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -82,8 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         send.setVisibility(View.VISIBLE);
         progressView.setVisibility(View.INVISIBLE);
     }
-    private void initHome(){
+    private void initHome(String user){
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 }
