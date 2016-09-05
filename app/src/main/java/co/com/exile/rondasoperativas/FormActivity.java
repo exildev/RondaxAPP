@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class FormActivity extends AppCompatActivity {
     String id;
     String user_id;
+    int registro_id;
     private ArrayList<String> campos;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -53,15 +55,6 @@ public class FormActivity extends AppCompatActivity {
         createRegistro();
 
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         initializeData();
         mRecyclerView = (RecyclerView) findViewById(R.id.form_recycler_view);
@@ -101,12 +94,48 @@ public class FormActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(formRequest);
     }
 
+    public void saveRegistro(View view){
+        String url = "http://104.236.33.228:8060/formulario/form/registro/"+ registro_id +"/";
+        StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("form", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("login", error.toString());
+                        Snackbar.make(findViewById(R.id.main_container),"formulario mal diligenciado", 800).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                for (int i = 0; i < mRecyclerView.getChildCount(); i++){
+                    View container = mRecyclerView.getChildAt(i);
+                    TextInputEditText field = (TextInputEditText) container.findViewById(R.id.field);
+                    params.put(field.getHint().toString(), field.getText().toString());
+                }
+                return params;
+            }
+        };
+        MySingleton.getInstance(this).addToRequestQueue(loginRequest);
+    }
+
     private void createRegistro(){
         String url = "http://104.236.33.228:8060/formulario/form/registro/create/";
         StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        try {
+                            JSONObject user = new JSONObject(response);
+                            registro_id = user.getInt("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Log.i("form", response);
                     }
                 },

@@ -9,9 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by pico on 4/09/2016.
- */
+
 public class MySingleton {
     private static MySingleton mInstance;
     private RequestQueue mRequestQueue;
@@ -25,7 +23,7 @@ public class MySingleton {
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(20);
+                            cache = new LruCache<>(20);
 
                     @Override
                     public Bitmap getBitmap(String url) {
@@ -48,8 +46,11 @@ public class MySingleton {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            // getApplicationContext() is key, it keeps you from leaking the
-            // Activity or BroadcastReceiver if someone passes one in.
+            /*DefaultHttpClient httpclient = new DefaultHttpClient();
+            BasicCookieStore cookieStore = new BasicCookieStore();
+            httpclient.setCookieStore( cookieStore );
+            HttpStack httpStack = new HttpClientStack( httpclient );*/
+
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
