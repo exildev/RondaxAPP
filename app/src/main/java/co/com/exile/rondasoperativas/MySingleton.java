@@ -9,6 +9,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 
 public class MySingleton {
     private static MySingleton mInstance;
@@ -46,11 +49,8 @@ public class MySingleton {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            /*DefaultHttpClient httpclient = new DefaultHttpClient();
-            BasicCookieStore cookieStore = new BasicCookieStore();
-            httpclient.setCookieStore( cookieStore );
-            HttpStack httpStack = new HttpClientStack( httpclient );*/
-
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;

@@ -39,6 +39,7 @@ public class FormActivity extends AppCompatActivity {
     private ArrayList<String> campos;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +62,14 @@ public class FormActivity extends AppCompatActivity {
         initializeData();
         mRecyclerView = (RecyclerView) findViewById(R.id.form_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new FormAdapter(campos);
         mRecyclerView.swapAdapter(mAdapter, false);
     }
 
     private void loadForm(){
-        String url = "http://104.236.33.228:8060/formulario/list/campo/?formulario="+id;
+            String url = "http://104.236.33.228:8060/formulario/list/campo/?formulario="+id;
         JsonObjectRequest formRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -102,9 +103,9 @@ public class FormActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.i("form", response);
                         Toast.makeText(getApplicationContext(), "Registrado con exito", Toast.LENGTH_LONG).show();
                         finish();
-                        Log.i("form", response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -117,10 +118,11 @@ public class FormActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                for (int i = 0; i < mRecyclerView.getChildCount(); i++){
+                for (int i = 0; i < campos.size(); i++){
                     TextInputLayout container = (TextInputLayout) mRecyclerView.getChildAt(i);
                     TextInputEditText field = (TextInputEditText) container.findViewById(R.id.field);
                     params.put(campos.get(i), field.getText().toString());
+                    Log.i("fields", campos.get(i) + ": " + field.getText().toString());
                 }
                 params.put("formulario", id);
                 params.put("operario", user_id);

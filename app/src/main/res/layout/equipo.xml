@@ -28,7 +28,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_build"
+                        android:src="@drawable/ic_build_white_24dp"
                         android:scaleType="centerInside"/>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -37,8 +37,7 @@
             android:id="@+id/container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/border_set">
+            android:layout_weight="1">
             <RelativeLayout
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -81,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_done"
+                    android:src="@drawable/ic_send"
                     android:scaleType="fitCenter"
                     android:visibility="gone" />
             </RelativeLayout>
